@@ -4,6 +4,10 @@ import com.stackroute.MovieCruiserApp.domain.Movie;
 import com.stackroute.MovieCruiserApp.exceptions.MovieAlreadyExistException;
 import com.stackroute.MovieCruiserApp.exceptions.MovieNotFoundException;
 import com.stackroute.MovieCruiserApp.services.MovieServices;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -14,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/movie")
+@Api(value="movieapplication", description="Operations pertaining to a movie application")
 public class MovieCruiserAppController {
    /* @Qualifier("userServicesImpl")
     private UserServices userService;
@@ -22,7 +27,15 @@ public class MovieCruiserAppController {
     @Qualifier("movieServiceImpl")
     private MovieServices movieService;
 
-    @PostMapping()
+    @ApiOperation(value = "Save a Movie in database", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully Saved Movie"),
+            @ApiResponse(code = 401, message = "You are not authorized to save the movie"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+    @PostMapping( produces = "application/json")
     public ResponseEntity<?> saveMovie(@RequestBody Movie movie){
         ResponseEntity responseEntity;
         try {
@@ -36,7 +49,15 @@ public class MovieCruiserAppController {
         return responseEntity;
     }
 
-    @GetMapping()
+    @ApiOperation(value = "Get all movies from database", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully Retrieved Movielist"),
+            @ApiResponse(code = 401, message = "You are not authorized to retrieve the movie list"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+    @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAllMovie(){
         List<Movie> movieList;
         movieList = movieService.getAllMovie();
@@ -44,7 +65,15 @@ public class MovieCruiserAppController {
         return  responseEntity;
     }
 
-    @DeleteMapping("/{movieId}")
+    @ApiOperation(value = "Delete a movie from database", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully deleted Movie"),
+            @ApiResponse(code = 401, message = "You are not authorized to delete the movie"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+    @DeleteMapping(value ="/{movieId}", produces = "application/json")
     public ResponseEntity<?> deleteMovie(@PathVariable String movieId){
         ResponseEntity responseEntity;
         try {
@@ -58,7 +87,15 @@ public class MovieCruiserAppController {
         return responseEntity;
     }
 
-    @PutMapping("/{movieId}")
+    @ApiOperation(value = "Update a Movie in database", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully Updated Movie"),
+            @ApiResponse(code = 401, message = "You are not authorized to update the movie"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+    @PutMapping(value ="/{movieId}", produces = "application/json")
     public ResponseEntity<?> updateMovie(@PathVariable String movieId,@RequestBody String comment){
         ResponseEntity responseEntity;
         try {
@@ -71,7 +108,15 @@ public class MovieCruiserAppController {
         return responseEntity;
     }
 
-    @GetMapping("/{movieName}")
+    @ApiOperation(value = "Search a Movie in database", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully Searched for Movie"),
+            @ApiResponse(code = 401, message = "You are not authorized to search the movie"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    }
+    )
+    @GetMapping(value="/{movieName}", produces = "application/json")
     public ResponseEntity<?> searcheMovie(@PathVariable String movieName){
         ResponseEntity responseEntity;
         try {
