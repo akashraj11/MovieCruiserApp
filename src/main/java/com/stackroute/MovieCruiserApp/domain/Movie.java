@@ -6,9 +6,9 @@ import javax.persistence.Id;
 @Entity
 public class Movie {
     @Id
-    int imdbId;
+    String imdbId;
     String movieTitle;
-    int yearOfRelease;
+    String yearOfRelease;
     double rating;
     String comment;
     String posterUrl;
@@ -16,7 +16,7 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(int imdbId, String movieTitle, int yearOfRelease, String comment,double rating, String posterUrl) {
+    public Movie(String imdbId, String movieTitle, String yearOfRelease, String comment,double rating, String posterUrl) {
         this.imdbId = imdbId;
         this.movieTitle= movieTitle;
         this.yearOfRelease = yearOfRelease;
@@ -25,11 +25,11 @@ public class Movie {
         this.posterUrl =posterUrl;
     }
 
-    public int getImdbId() {
+    public String getImdbId() {
         return imdbId;
     }
 
-    public void setImdbId(int imdbId) {
+    public void setImdbId(String imdbId) {
         this.imdbId = imdbId;
     }
 
@@ -41,11 +41,11 @@ public class Movie {
         this.movieTitle = movieTitle;
     }
 
-    public int getYearOfRelease() {
+    public String getYearOfRelease() {
         return yearOfRelease;
     }
 
-    public void setYearOfRelease(int yearOfRelease) {
+    public void setYearOfRelease(String yearOfRelease) {
         this.yearOfRelease = yearOfRelease;
     }
 

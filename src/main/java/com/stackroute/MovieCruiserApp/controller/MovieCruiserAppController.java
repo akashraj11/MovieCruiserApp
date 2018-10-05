@@ -2,6 +2,7 @@ package com.stackroute.MovieCruiserApp.controller;
 
 import com.stackroute.MovieCruiserApp.domain.Movie;
 import com.stackroute.MovieCruiserApp.exceptions.MovieAlreadyExistException;
+import com.stackroute.MovieCruiserApp.exceptions.MovieNotFoundException;
 import com.stackroute.MovieCruiserApp.services.MovieServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,29 +22,6 @@ public class MovieCruiserAppController {
     @Qualifier("movieServiceImpl")
     private MovieServices movieService;
 
-    /*
-    @PostMapping("user")
-    public ResponseEntity<?> saveUser(@RequestBody User user){
-        ResponseEntity responseEntity;
-        try {
-            User savedUser = userService.addUser(user);
-            responseEntity = new ResponseEntity<User>(savedUser, HttpStatus.OK);
-        }
-        catch (Exception e){
-            responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
-            e.printStackTrace();
-        }
-        return responseEntity;
-    }
-
-    @GetMapping("users")
-    public ResponseEntity<?> getAllUser(){
-        List<User> userList;
-        userList = userService.getAllUser();
-        ResponseEntity responseEntity = new ResponseEntity<List<User>>(userList,HttpStatus.OK);
-        return  responseEntity;
-    }
-    */
     @PostMapping()
     public ResponseEntity<?> saveMovie(@RequestBody Movie movie){
         ResponseEntity responseEntity;
@@ -67,16 +45,29 @@ public class MovieCruiserAppController {
     }
 
     @DeleteMapping("/{movieId}")
-    public ResponseEntity<?> deleteMovie(@PathVariable int movieId){
-        Movie deletedMovie = movieService.deleteMovie(movieId);
-        ResponseEntity responseEntity = new ResponseEntity<Movie>(deletedMovie, HttpStatus.OK);
+    public ResponseEntity<?> deleteMovie(@PathVariable String movieId){
+        ResponseEntity responseEntity;
+        try {
+            Movie deletedMovie = movieService.deleteMovie(movieId);
+            responseEntity = new ResponseEntity<Movie>(deletedMovie, HttpStatus.OK);
+        }
+        catch (MovieNotFoundException e){
+            responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+            e.printStackTrace();
+        }
         return responseEntity;
     }
 
     @PutMapping("/{movieId}")
     public ResponseEntity<?> updateMovie(@PathVariable String movieId,@RequestBody String comment){
-        Movie updatedMovie = movieService.updateMovie(movieId,comment);
-        ResponseEntity responseEntity = new ResponseEntity<Movie>(updatedMovie, HttpStatus.OK);
+        ResponseEntity responseEntity;
+        try {
+            Movie updatedMovie = movieService.updateMovie(movieId, comment);
+            responseEntity = new ResponseEntity<Movie>(updatedMovie, HttpStatus.OK);
+        }catch(MovieNotFoundException e){
+            responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+            e.printStackTrace();
+        }
         return responseEntity;
     }
 

@@ -7,6 +7,7 @@ public class MovieNotFoundException extends Exception {
     }
 
     public MovieNotFoundException(String message) {
+        super(message);
         this.message = message;
     }
 }

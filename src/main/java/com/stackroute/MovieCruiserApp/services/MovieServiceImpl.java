@@ -17,11 +17,8 @@ public class MovieServiceImpl implements MovieServices{
     private MovieRepository movieRepository;
 
     public Movie addMovie(Movie movie) throws MovieAlreadyExistException {
-        List<Movie> movieList = movieRepository.findAll();
-        for(Movie movie1: movieList) {
-            if ((movie1.getMovieTitle()).equals(movie.getMovieTitle())) {
-                throw new MovieAlreadyExistException("Movie Already Exists");
-            }
+        if(getMovieById(movie.getImdbId())!=null) {
+            throw new MovieAlreadyExistException("Movie Already Exists");
         }
         Movie savedMovie = movieRepository.save(movie);
         if(savedMovie == null)
@@ -35,9 +32,9 @@ public class MovieServiceImpl implements MovieServices{
         return (List<Movie>)movieRepository.findAll();
     }
 
-    public Movie deleteMovie(int imdbId) {
+    public Movie deleteMovie(String imdbId) throws MovieNotFoundException  {
         if(getMovieById(imdbId)==null) {
-            return null;
+            throw new MovieNotFoundException("Movie Not Found");
         }
         else {
             Movie deletedMovie = getMovieById(imdbId);
@@ -46,30 +43,21 @@ public class MovieServiceImpl implements MovieServices{
         }
     }
 
-    public Movie getMovieById(int imdbId) {
-            return movieRepository.findById(imdbId).get();
+    public Movie getMovieById(String imdbId) {
+                return movieRepository.findByimdbId(imdbId);
     }
 
-    public Movie getMovieByName(String movieTitle) throws MovieNotFoundException {
-        List<Movie> movieList = movieRepository.findAll();
-        for(Movie movie: movieList){
-            if((movie.getMovieTitle()).equals(movieTitle)){
-                return movie;
-            }
-            else{
-                throw new MovieNotFoundException("Movie Not Found");
-            }
-        }
-        return null;
+    public Movie getMovieByName(String movieTitle)  {
+            return movieRepository.findBymovieTitle(movieTitle) ;
+
     }
 
-    public Movie updateMovie(String imdbId,String comment){
-        int Id = Integer.parseInt(imdbId);
-        if(getMovieById(Id)==null) {
-            return null;
+    public Movie updateMovie(String imdbId,String comment) throws MovieNotFoundException{
+        if(getMovieById(imdbId)==null) {
+            throw new MovieNotFoundException("Movie Not Found");
         }
         else {
-            Movie updatedMovie = getMovieById(Id);
+            Movie updatedMovie = getMovieById(imdbId);
             updatedMovie.setComment(comment.trim());
             movieRepository.save(updatedMovie);
             return updatedMovie;
