@@ -20,9 +20,6 @@ import java.util.List;
 @RequestMapping("api/v1/movie")
 @Api(value="movieapplication", description="Operations pertaining to a movie application")
 public class MovieCruiserAppController {
-   /* @Qualifier("userServicesImpl")
-    private UserServices userService;
-    */
     @Autowired
     @Qualifier("movieServiceImpl")
     private MovieServices movieService;
@@ -35,7 +32,7 @@ public class MovieCruiserAppController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @PostMapping( produces = "application/json")
+    @PostMapping()
     public ResponseEntity<?> saveMovie(@RequestBody Movie movie){
         ResponseEntity responseEntity;
         try {
@@ -57,7 +54,7 @@ public class MovieCruiserAppController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @GetMapping(produces = "application/json")
+    @GetMapping()
     public ResponseEntity<?> getAllMovie(){
         List<Movie> movieList;
         movieList = movieService.getAllMovie();
@@ -73,7 +70,7 @@ public class MovieCruiserAppController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @DeleteMapping(value ="/{movieId}", produces = "application/json")
+    @DeleteMapping(value ="/{movieId}")
     public ResponseEntity<?> deleteMovie(@PathVariable String movieId){
         ResponseEntity responseEntity;
         try {
@@ -95,7 +92,7 @@ public class MovieCruiserAppController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @PutMapping(value ="/{movieId}", produces = "application/json")
+    @PutMapping(value ="/{movieId}")
     public ResponseEntity<?> updateMovie(@PathVariable String movieId,@RequestBody String comment){
         ResponseEntity responseEntity;
         try {
@@ -116,7 +113,7 @@ public class MovieCruiserAppController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     }
     )
-    @GetMapping(value="/{movieName}", produces = "application/json")
+    @GetMapping(value="/{movieName}")
     public ResponseEntity<?> searcheMovie(@PathVariable String movieName){
         ResponseEntity responseEntity;
         try {
